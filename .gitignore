@@ -1,0 +1,15 @@
+# Ignore cache de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore ambientes virtuais
+.venv/
+env/
+venv/
+
+# Ignore arquivos de configuração do VS Code
+.vscode/
+
+# Ignore cache do Poetry
+.ruff_cache/

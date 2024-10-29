@@ -7,6 +7,10 @@ class ServicoPhotos:
         return RequisicoesAPI.requisicao_get('photos')
 
     @staticmethod
+    def listar_photos_por_album(album_id):
+        return RequisicoesAPI.requisicao_get(f'photos?albumId={album_id}')
+
+    @staticmethod
     def obter_photo(photo_id):
         return RequisicoesAPI.requisicao_get(f'photos/{photo_id}')
 

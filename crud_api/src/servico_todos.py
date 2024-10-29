@@ -7,6 +7,10 @@ class ServicoTodos:
         return RequisicoesAPI.requisicao_get('todos')
 
     @staticmethod
+    def listar_todos_por_usuario(user_id):
+        return RequisicoesAPI.requisicao_get(f'todos?userId={user_id}')
+
+    @staticmethod
     def obter_todo(todo_id):
         return RequisicoesAPI.requisicao_get(f'todos/{todo_id}')
 

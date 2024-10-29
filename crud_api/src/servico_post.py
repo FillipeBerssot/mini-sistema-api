@@ -7,6 +7,10 @@ class ServicoPosts:
         return RequisicoesAPI.requisicao_get('posts')
 
     @staticmethod
+    def listar_post_por_usuario(user_id):
+        return RequisicoesAPI.requisicao_get(f'posts?userId={user_id}')
+
+    @staticmethod
     def obter_post(post_id):
         return RequisicoesAPI.requisicao_get(f'posts/{post_id}')
 

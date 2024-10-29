@@ -7,6 +7,10 @@ class ServicoComments:
         return RequisicoesAPI.requisicao_get('comments')
 
     @staticmethod
+    def listar_comments_por_post(post_id):
+        return RequisicoesAPI.requisicao_get(f'comments?postId={post_id}')
+
+    @staticmethod
     def obter_comment(comment_id):
         return RequisicoesAPI.requisicao_get(f'comments/{comment_id}')
 

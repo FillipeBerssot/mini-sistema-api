@@ -7,6 +7,10 @@ class ServicoAlbuns:
         return RequisicoesAPI.requisicao_get('albums')
 
     @staticmethod
+    def listar_albuns_por_usuario(user_id):
+        return RequisicoesAPI.requisicao_get(f'albums?userId={user_id}')
+
+    @staticmethod
     def obter_album(album_id):
         return RequisicoesAPI.requisicao_get(f'albums/{album_id}')
 

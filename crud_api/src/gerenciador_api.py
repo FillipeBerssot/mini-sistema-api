@@ -59,7 +59,7 @@ class GerenciadorDados:
 
         if 'erro' in novo_item:
             print(
-                f"\n❌ Erro ao criar {nome_item.casefold()}: "
+                f'\n❌ Erro ao criar {nome_item.casefold()}: '
                 f"{novo_item['erro']}"
             )
         else:
@@ -81,7 +81,7 @@ class GerenciadorDados:
 
         if 'erro' in item_atualizado:
             print(
-                f"\n❌ Erro ao atualizar {nome_item.casefold()}: "
+                f'\n❌ Erro ao atualizar {nome_item.casefold()}: '
                 f"{item_atualizado['erro']}"
             )
         else:
@@ -129,12 +129,44 @@ class GerenciadorCRUD(GerenciadorDados):
                 post = ServicoPosts.obter_post(post_id)
                 self.visualizar(item=post, nome_item='Post')
             elif opcao_post == '3':
+                post_id = input('Digite o ID do post para listar comments: ')
+                post = ServicoPosts.obter_post(post_id)
+                if post and 'id' in post:
+                    comments = ServicoComments.listar_comments_por_post(
+                        post_id
+                    )
+                    if comments:
+                        self.listar(itens=comments, nome_item='Comments')
+                    else:
+                        print(
+                            f'\n❌ Erro: Nenhum comment encontrado para o '
+                            f'post com ID {post_id}.'
+                        )
+                else:
+                    print(f'\n❌ Erro: Post com ID {post_id} não encontrado.')
+            elif opcao_post == '4':
+                user_id = input('Digite o ID do usuário para listar posts: ')
+                user = ServicoUsers.obter_user(user_id)
+                if user and 'id' in user:
+                    posts = ServicoPosts.listar_post_por_usuario(user_id)
+                    if posts:
+                        self.listar(itens=posts, nome_item='Posts por Usuário')
+                    else:
+                        print(
+                            f'\n❌ Erro: Nenhum post encontrado para o '
+                            f'usuário com ID {user_id}.'
+                        )
+                else:
+                    print(
+                        f'\n❌ Erro: Usuário com ID {user_id} não encontrado.'
+                    )
+            elif opcao_post == '5':
                 titulo = input('Digite o título do post: ')
                 corpo = input('Digite o corpo do post: ')
                 usuario_id = input('Digite o UserID do usuário: ')
                 novo_post = ServicoPosts.criar_post(titulo, corpo, usuario_id)
                 self.criar(novo_item=novo_post, nome_item='Post')
-            elif opcao_post == '4':
+            elif opcao_post == '6':
                 post_id = input('Digite o ID do post: ')
                 post = ServicoPosts.obter_post(post_id)
                 if 'id' in post:
@@ -150,7 +182,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     )
                 else:
                     print(f'\n❌ Erro: Post com ID {post_id} não encontrado.')
-            elif opcao_post == '5':
+            elif opcao_post == '7':
                 post_id = input('Digite o ID do post a ser deletado: ')
                 post = ServicoPosts.obter_post(post_id)
 
@@ -161,7 +193,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     )
                 else:
                     print(f'\n❌ Erro: Post com ID {post_id} não encontrado.')
-            elif opcao_post == '6':
+            elif opcao_post == '8':
                 break
             else:
                 print('\n⚠️ Opção inválida. Tente novamente.')
@@ -178,6 +210,24 @@ class GerenciadorCRUD(GerenciadorDados):
                 comment = ServicoComments.obter_comment(comment_id)
                 self.visualizar(item=comment, nome_item='Comment')
             elif opcao_comment == '3':
+                post_id = input('Digite o ID do post para listar comments: ')
+                post = ServicoPosts.obter_post(post_id)
+                if post and 'id' in post:
+                    comments = ServicoComments.listar_comments_por_post(
+                        post_id
+                    )
+                    if comments:
+                        self.listar(
+                            itens=comments, nome_item='Comments por Post'
+                        )
+                    else:
+                        print(
+                            f'\n❌ Erro: Nenhum comment encontrado para o '
+                            f'post com ID {post_id}.'
+                        )
+                else:
+                    print(f'\n❌ Erro: Post com ID {post_id} não encontrado.')
+            elif opcao_comment == '4':
                 post_id = input('Digite o PostID do post: ')
                 nome = input('Digite o nome do comment: ')
                 email = input('Digite o email do comment: ')
@@ -186,7 +236,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     post_id, nome, email, corpo
                 )
                 self.criar(novo_item=novo_comment, nome_item='Comment')
-            elif opcao_comment == '4':
+            elif opcao_comment == '5':
                 comment_id = input('Digite o ID do comment: ')
                 comment = ServicoComments.obter_comment(comment_id)
                 if 'id' in comment:
@@ -204,7 +254,7 @@ class GerenciadorCRUD(GerenciadorDados):
                         f'\n❌ Erro: Comment com ID {comment_id} '
                         'não encontrado.'
                     )
-            elif opcao_comment == '5':
+            elif opcao_comment == '6':
                 comment_id = input('Digite o ID do comment a ser deletado: ')
                 comment = ServicoComments.obter_comment(comment_id)
                 if 'id' in comment:
@@ -217,7 +267,7 @@ class GerenciadorCRUD(GerenciadorDados):
                         f'\n❌ Erro: Comment com ID {comment_id} '
                         'não encontrado.'
                     )
-            elif opcao_comment == '6':
+            elif opcao_comment == '7':
                 break
             else:
                 print('\n⚠️ Opção inválida. Tente novamente.')
@@ -234,11 +284,29 @@ class GerenciadorCRUD(GerenciadorDados):
                 album = ServicoAlbuns.obter_album(album_id)
                 self.visualizar(item=album, nome_item='Álbum')
             elif opcao_album == '3':
+                user_id = input('Digite o ID do usuário para listar álbuns: ')
+                user = ServicoUsers.obter_user(user_id)
+                if user and 'id' in user:
+                    albuns = ServicoAlbuns.listar_albuns_por_usuario(user_id)
+                    if albuns:
+                        self.listar(
+                            itens=albuns, nome_item='Álbuns por Usuário'
+                        )
+                    else:
+                        print(
+                            f'\n❌ Erro: Nenhum álbum encontrado para o '
+                            f'usuário com ID {user_id}.'
+                        )
+                else:
+                    print(
+                        f'\n❌ Erro: Usuário com ID {user_id} não encontrado.'
+                    )
+            elif opcao_album == '4':
                 titulo = input('Digite o título do álbum: ')
                 usuario_id = input('Digite o UserID do usuário: ')
                 novo_album = ServicoAlbuns.criar_album(titulo, usuario_id)
                 self.criar(novo_item=novo_album, nome_item='Álbum')
-            elif opcao_album == '4':
+            elif opcao_album == '5':
                 album_id = input('Digite o ID do álbum: ')
                 album = ServicoAlbuns.obter_album(album_id)
                 if 'id' in album:
@@ -255,7 +323,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     print(
                         f'\n❌ Erro: Álbum com ID {album_id} não encontrado.'
                     )
-            elif opcao_album == '5':
+            elif opcao_album == '6':
                 album_id = input('Digite o ID do álbum a ser deletado: ')
                 album = ServicoAlbuns.obter_album(album_id)
                 if 'id' in album:
@@ -267,7 +335,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     print(
                         f'\n❌ Erro: Álbum com ID {album_id} não encontrado.'
                     )
-            elif opcao_album == '6':
+            elif opcao_album == '7':
                 break
             else:
                 print('\n⚠️ Opção inválida. Tente novamente.')
@@ -284,6 +352,22 @@ class GerenciadorCRUD(GerenciadorDados):
                 photo = ServicoPhotos.obter_photo(photo_id)
                 self.visualizar(item=photo, nome_item='Photo')
             elif opcao_photo == '3':
+                album_id = input('Digite o AlbumID para listar photos: ')
+                album = ServicoAlbuns.obter_album(album_id)
+                if album and 'id' in album:
+                    photos = ServicoPhotos.listar_photos_por_album(album_id)
+                    if photos:
+                        self.listar(itens=photos, nome_item='Photos por Álbum')
+                    else:
+                        print(
+                            f'\n❌ Erro: Nenhuma foto encontrada para o '
+                            f'álbum com ID {album_id}.'
+                        )
+                else:
+                    print(
+                        f'\n❌ Erro: Álbum com ID {album_id} não encontrado.'
+                    )
+            elif opcao_photo == '4':
                 album_id = input('Digite o AlbumID da photo: ')
                 titulo = input('Digite o título da photo: ')
                 url = input('Digite a url da photo: ')
@@ -292,7 +376,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     album_id, titulo, url, thumbnail_url
                 )
                 self.criar(novo_item=nova_photo, nome_item='Photo')
-            elif opcao_photo == '4':
+            elif opcao_photo == '5':
                 photo_id = input('Digite o ID da photo: ')
                 photo = ServicoPhotos.obter_photo(photo_id)
                 if 'id' in photo:
@@ -311,7 +395,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     )
                 else:
                     print(f'\n❌ Erro: Foto com ID {photo_id} não encontrada.')
-            elif opcao_photo == '5':
+            elif opcao_photo == '6':
                 photo_id = input('Digite o ID da photo a ser deletada: ')
                 photo = ServicoPhotos.obter_photo(photo_id)
                 if 'id' in photo:
@@ -323,7 +407,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     print(
                         f'\n❌ Erro: Photo com ID {photo_id} não encontrada.'
                     )
-            elif opcao_photo == '6':
+            elif opcao_photo == '7':
                 break
             else:
                 print('\n⚠️ Opção inválida. Tente novamente.')
@@ -340,6 +424,22 @@ class GerenciadorCRUD(GerenciadorDados):
                 todo = ServicoTodos.obter_todo(todo_id)
                 self.visualizar(item=todo, nome_item='Todo')
             elif opcao_todo == '3':
+                user_id = input('Digite o UserID para listar todos: ')
+                user = ServicoUsers.obter_user(user_id)
+                if user and 'id' in user:
+                    todos = ServicoTodos.listar_todos_por_usuario(user_id)
+                    if todos:
+                        self.listar(itens=todos, nome_item='Todos por Usuário')
+                    else:
+                        print(
+                            f'\n❌ Erro: Nenhuma tarefa encontrada para o '
+                            f'usuário com ID {user_id}.'
+                        )
+                else:
+                    print(
+                        f'\n❌ Erro: Usuário com ID {user_id} não encontrado.'
+                    )
+            elif opcao_todo == '4':
                 usuario_id = input('Digite o UserID do usuário: ')
                 titulo = input('Digite o título do todo: ')
                 completo = self.obter_status_todo()
@@ -347,7 +447,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     usuario_id, titulo, completo
                 )
                 self.criar(novo_item=novo_todo, nome_item='Todo')
-            elif opcao_todo == '4':
+            elif opcao_todo == '5':
                 todo_id = input('Digite o ID do todo: ')
                 todo = ServicoTodos.obter_todo(todo_id)
                 if 'id' in todo:
@@ -365,7 +465,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     print(
                         f'\n❌ Erro: Tarefa com ID {todo_id} não encontrada.'
                     )
-            elif opcao_todo == '5':
+            elif opcao_todo == '6':
                 todo_id = input('Digite o ID do todo a ser deletado: ')
                 todo = ServicoTodos.obter_todo(todo_id)
                 if 'id' in todo:
@@ -375,7 +475,7 @@ class GerenciadorCRUD(GerenciadorDados):
                     )
                 else:
                     print(f'\n❌ Erro: Todo com ID {todo_id} não encontrado.')
-            elif opcao_todo == '6':
+            elif opcao_todo == '7':
                 break
             else:
                 print('\n⚠️ Opção inválida. Tente novamente.')
